@@ -1,0 +1,59 @@
+<!--分类产品导航-->
+<ul class="nav nav-pills" role="tablist">
+	<li role="presentation" class="active kindNav " ng-repeat="classItem in classList" ng-click="goProList(classItem)">
+		<a>{{classItem.className}}</a>
+	</li>
+</ul>
+
+<ul class="nav navbar-nav">
+	<li>
+		<form class="navbar-form navbar-left" role="search">
+			<!--搜索商品-->
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="可以搜索商品的名称" ng-model="searchTxt">
+			</div>
+			<!--相关排序-->
+			<button type="button" class="btn btn-default">搜索</button>
+			<button class="btn btn-danger" ng-click="sortData(0)">价格<i class="glyphicon glyphicon-arrow-up"></i></button>
+			<button class="btn btn-danger" ng-click="sortData(1)">价格<i class="glyphicon glyphicon-arrow-down"></i></button>
+			<button class="btn btn-danger" ng-click="sortData(2)">折扣<i class="glyphicon glyphicon-arrow-up"></i></button>
+			<button class="btn btn-danger" ng-click="sortData(3)">折扣<i class="glyphicon glyphicon-arrow-down"></i></button>
+		</form>
+	</li>
+	<br />
+	<!--上下页选择-->
+	<li>
+		<a  ng-click="pageChange(0,classID)" id="prevBtn">上一页</a>
+	</li>
+	<li>
+		<input value={{pageCode+1}} id="pageCode" />
+	</li>
+	<li>
+		<a ng-click="pageChange(1,classID)" id="nextBtn">下一页</a>
+	</li>
+	<li>
+		每页显示
+		<select ng-model="lineNumber" id="lineNumber" ng-change="changeNum(lineNumber)">
+			<option value="4">4</option>
+			<option value="8">8</option>
+			<option value="12">12</option>
+		</select>个
+	</li>
+
+</ul>
+
+<div class="row">
+	<div ng-hide="isLoading">正在加载</div>
+	<div ng-show="isLoading" class="col-sm-4 col-md-3 col-xs-6 proItem" ng-repeat="proItem in proList | limitTo:lineNumber | filter:{goodsName:searchTxt}">
+	<div ng-show = "true" class = "thumbnail"  ng-click="goDetail(proItem)">
+	    <img ng-src="{{proItem.goodsListImg}}" alt="..." class="proImg" >
+      	<div class="caption">
+	        <h3 class="test">{{proItem.goodsName}}</h3>
+	        <p>{{proItem.className}}</p>
+	        <p>{{proItem.price | number:2}}</p>
+	        <p>{{proItem.discount | discountFilter}}折</p>
+	        <p><button class="btn btn-primary" ng-click="addCart(proItem);$event.stopPropagation();">购物车</button> </p>
+      </div>
+    </div>
+	</div>
+</div>
